@@ -31,13 +31,26 @@ app.post("/", function(req,res){
         if(err){
           res.render('index', {weather: null, error: 'Error, please try again'});
         } else {
+            //we will recieve all the data as a JSON object
+            //so first we have to converte the json object to readable string
           let weather = JSON.parse(body)
+
+
           if(weather.main == undefined){
             res.render('index', {weather: null, error: 'Error, please try again'});
           } else {
+              //weather.main.temp will show the temp in farenheit
+              //so we have to change the farenheit into celcius
             let weatherTemp = (weather.main.temp-32) * 0.55; 
+            
+            //Since we used mathemetical equation on the weatherTemp, we are going to get 4 to 8 digits after the
+            //decimal point....but we just need two digit after the decimal point so we will use 'toFixed(2)' 
             let weatherTempSliced = weatherTemp.toFixed(2);
+
+            //update the weather text
             let weatherText = `It's ${weatherTempSliced} degrees Ferenheit in ${weather.name}!`;
+
+            //render the data and show it on the browser
             res.render('index', {weather: weatherText, error: null});
           }
         }
